@@ -1,0 +1,24 @@
+# backup restore 05/06/23 14:05:15
+/Volumes/extraDrive/dcs_Drive/server/0-digital-ocean-production/4-mongo-replication-ok/backup/liveroleitapin-prod-050623-140515.gz
+/Volumes/extraDrive/dcs_Drive/server/0-digital-ocean-production/4-mongo-replication-ok/backup/devappapin-prod-050623-140515.gz
+
+scp -i ~/.ssh/role-prod-imac ./4-mongo-shard/backup/devappapin-prod-050623-140515.gz root@159.89.169.255:/rit/smongo/action/data/
+scp -i ~/.ssh/role-prod-imac ./4-mongo-shard/backup/liveroleitapin-prod-050623-140515.gz root@159.89.169.255:/rit/smongo/action/data/
+
+# not-work
+mongorestore --host "10.122.0.2" --port 27116 --username "helloadmin" --password "importantmyfamilyandfriends07042023" --authenticationDatabase admin --gzip --archive="devappapin-prod-050623-140515.gz"
+mongorestore --host "10.122.0.3" --port 27117 --username "helloadmin" --password "importantmyfamilyandfriends07042023" --drop --authenticationDatabase admin --gzip --archive="liveroleitapin-prod-050623-140515.gz"
+mongorestore --host=$HOST --port=$PORT -u=$USER -p=$PASS --drop --gzip --archive=${DB_BACKUP_PATH}/${RESTOREFILE_R}
+mongorestore --host "10.122.0.2" --port 27116 --username "dcsurani" --password "Ath9aeGaePhae4shaengeoLaeQu3eichee9weprodRoleitMuS1maifohDe1faeg6keisoobe0" --drop --gzip --archive="liveroleitapin-prod-050623-140515.gz"
+
+# worked
+mongorestore -v --nsInclude=vehicles.vehicleinformation --uri "mongodb://devdcsurani:9aeGaePhae4shaengeoLaeQu3eichee9weprodRoleitMuS1maifohDe1faeg6keisoobe0Ath@10.122.0.2:27116,10.122.0.3:27117/devappapin?retryWrites=true&w=majority" --db "devappapin" --drop --gzip --archive="devappapin-prod-050623-140515.gz"
+mongorestore -v --nsInclude=vehicles.vehicleinformation --uri "mongodb://dcsurani:Ath9aeGaePhae4shaengeoLaeQu3eichee9weprodRoleitMuS1maifohDe1faeg6keisoobe0@10.122.0.2:27116,10.122.0.3:27117/liveroleitapin?retryWrites=true&w=majority" --db "liveroleitapin" --drop --gzip --archive="liveroleitapin-prod-050623-140515.gz"
+
+
+# app-connection-string
+MONGO_USER="mongodb://dcsurani"
+MONGO_PASSWORD="Ath9aeGaePhae4shaengeoLaeQu3eichee9weprodRoleitMuS1maifohDe1faeg6keisoobe0"
+MONGO_URL="@10.122.0.2:27116,10.122.0.3:27117/liveroleitapin?retryWrites=true&w=majority?ssl=false"
+
+

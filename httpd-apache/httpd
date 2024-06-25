@@ -1,0 +1,17 @@
+FROM httpd:2.4-alpine
+
+RUN apk update && \
+    apk add \
+    php \
+    php-fpm \
+    php-zip \
+    composer \
+    supervisor
+
+COPY . /usr/local/apache2/htdocs
+COPY httpd.conf /usr/local/apache2/conf/httpd.conf
+COPY supervisor /etc/supervisor
+
+WORKDIR /usr/local/apache2/htdocs
+
+CMD ["supervisord","-n", "-c", "/etc/supervisor/supervisord.conf"]

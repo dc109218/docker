@@ -1,0 +1,33 @@
+version: "3.1"
+services:
+  webtop:
+    image: lscr.io/linuxserver/webtop:ubuntu-xfce
+    container_name: webtop
+    security_opt:
+      - seccomp:unconfined
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Asia/Calcutta
+    volumes:
+      - //volume1/dcs_Drive/dockerSynology/webtop:/config:rw
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - 3000:3000
+      - 3389:3389
+    devices:
+      - /dev/dri:/dev/dri
+    restart: unless-stopped
+
+# docker run -d \
+#   --name=webtop \
+#   --security-opt seccomp=unconfined \
+#   -e PUID=1000 \
+#   -e PGID=1000 \
+#   -e TZ=Asia/Calcutta \
+#   -e KEYBOARD=en-us-qwerty \
+#   -p 3000:3000 \
+#   --restart unless-stopped \
+#   lscr.io/linuxserver/webtop:ubuntu-xfce
+
+# docker pull dcsurani/scm-roleit:120922-234847

@@ -1,0 +1,16 @@
+devappapin-prod-050623-140515.gz
+liveroleitapin-prod-050623-140515.gz
+
+scp -i ~/.ssh/role-prod-imac ubuntu@65.1.61.229:/rolemount/mongo-rep/backup/liveroleitapin-prod-050623-140515.gz $PWD/
+scp -i ~/.ssh/role-prod-imac ubuntu@65.1.61.229:/rolemount/mongo-rep/backup/devappapin-prod-050623-140515.gz $PWD/
+
+scp -i ~/.ssh/role-prod-imac root@146.190.8.61:/rit/smongo/action/backup/devappapin-prod-221223-091537.gz $PWD/
+scp -i ~/.ssh/role-prod-imac root@146.190.8.61:/rit/smongo/action/backup/liveroleitapin-prod-221223-091749.gz $PWD/
+
+/Volumes/extraDrive/dcs_Drive/server/0-role-server-production/4-mongo-replication-ok/backup/liveroleitapin-prod-050623-140515.gz
+/Volumes/extraDrive/dcs_Drive/server/0-role-server-production/4-mongo-replication-ok/backup/devappapin-prod-050623-140515.gz
+
+
+mongorestore --uri "mongodb://devdcsurani:9aeGaePhae4shaengeoLaeQu3eichee9weprodRoleitMuS1maifohDe1faeg6keisoobe0Ath@10.122.0.4:27018,10.122.0.3:27020/devappapin?replicaSet=reprit" --db "devappapin" --drop --gzip --archive="devappapin-prod-130623-133002.gz"
+
+mongorestore -v --nsInclude=vehicles.vehicleinformation --uri "mongodb://helloadmin:importantmyfamilyandfriends07042023@10.122.0.4:27018,10.122.0.3:27020/liveroleitapin?ssl=false&retryWrites=true&w=majority&readPreference=primary&replicaSet=reprit" --authenticationDatabase admin --db "liveroleitapin" --drop --gzip --archive="liveroleitapin-prod-130623-133002.gz"

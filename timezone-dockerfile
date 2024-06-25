@@ -1,0 +1,14 @@
+FROM Alpine
+RUN ln -snf /usr/share/zoneinfo/Asia/Calcutta /etc/localtime && echo Asia/Calcutta > /etc/timezone
+
+#
+ENV TZ="America/New_York"
+ENV TZ Asia/India
+
+#kubet
+# spec:
+#       containers:
+#       - name: demo
+#         env:
+#         - name: TZ
+#           value: Asia/Kolkata

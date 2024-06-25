@@ -1,0 +1,24 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+version: '3'
+services:
+  storyvl:
+    container_name: storyvl
+    image: registry.roleit.com:5443/program-storyvl:130623.232524
+    restart: always
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:20070/healthcheck || exit 1"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 3
+    networks:
+      role:
+        ipv4_address: 192.168.1.12
+networks:
+  role:
+    external: true
+
+# docker-compose -f 12-storyvl-dc.yaml up -d
+# docker-compose -f 12-storyvl-dc.yaml down

@@ -1,0 +1,26 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+version: '3'
+services:
+  vidcomtop:
+    container_name: vidcomtop
+    image: registry.roleit.com:5443/program-vidcom:130523.095837
+    restart: always
+    ports:
+      - 44444:1190
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:20070/healthcheck || exit 1"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 3
+    networks:
+      role:
+        ipv4_address: 192.168.1.15
+networks:
+  role:
+    external: true
+
+# docker-compose -f 15-vidcom-top-dc.yaml up -d
+# docker-compose -f 15-vidcom-top-dc.yaml down

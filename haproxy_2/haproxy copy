@@ -1,0 +1,54 @@
+global
+    log stdout local0
+    chroot /var/lib/haproxy
+    user haproxy
+    group haproxy
+    maxconn 2048
+    pidfile /var/run/haproxy.pid
+    daemon
+
+# Set the defaults
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend http-in
+    bind *:80
+    bind *:443 ssl crt /usr/local/etc/haproxy/roleit.com.pem
+
+    # Redirect HTTP traffic to HTTPS
+    redirect scheme https code 301 if !{ ssl_fc }
+
+    # Handle HTTPS traffic based on hostname
+    # acl host_roleit_com hdr(host) -i roleit.com
+    acl host_avatar_roleit_com hdr(host) -i rit.roleit.com
+
+    # use_backend roleit_com_backend if host_roleit_com
+    use_backend avatar_com_backend if host_avatar_roleit_com
+
+# backend roleit_com_backend
+#     mode http
+#     balance roundrobin
+#     server example_server1 10.122.0.2:80 check
+#     server example_server2 10.122.0.2:80 check
+
+backend avatar_com_backend
+    mode http
+    balance roundrobin
+    server graphql 10.122.0.2:19784 check
+
+# Rest-Machine
+# frontend ft_restml
+#     mode tcp
+#     bind *:2070
+#     default_backend bk_restml
+
+# backend bk_restml
+#     mode tcp
+#     option tcp-check
+#     server role3-restml 10.122.0.3:20070 check inter 10s

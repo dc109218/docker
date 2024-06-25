@@ -1,0 +1,27 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+version: '3.3'
+services:
+  cassandra1:
+    image: cassandra:4.1.0
+    restart: on-failure #always
+    container_name: cassandra-1
+    # volumes:
+    #   - $PWD:/var/lib/cassandra:rw
+    environment:
+      CASSANDRA_CLUSTER_NAME: hello
+      # CASSANDRA_SEEDS: 172.19.0.11,172.19.0.12
+    ports:
+      - 9042:9042
+    networks:
+      - roleit
+        # ipv4_address: 172.20.0.2
+networks:
+  roleit:
+    driver: bridge
+    external: true
+
+# docker-compose -f docker-compose-1.yml up -d
+# docker-compose -f docker-compose-1.yml down

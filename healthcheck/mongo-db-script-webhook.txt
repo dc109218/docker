@@ -1,0 +1,29 @@
+#!/bin/bash
+
+## Channel: DevOps-Job
+WEBURL="https://sareteam227.webhook.office.com/webhookb2/51c0fa03-3e01-420b-9c54-5a45a7076513@2d90f6ac-4135-4fb5-b54b-745e14d0c51f/IncomingWebhook/808a1c3a02b148128ee173b4295b5550/8dbe73bd-2c14-4449-9b80-846cdbcc96d4"
+COM1=$1
+COM2=$2
+
+# curl -H 'Content-Type: application/json' -d '{"text": "Mongo backup Error for upload"}' "$WEBURL"
+
+curl --location --request POST $WEBURL --header 'Content-Type: application/json' \
+    --data-raw '{
+        "@type": "MessageCard",
+        "@context": "http://schema.org/extensions",
+        "themeColor": "0076D7",
+        "summary": "k8s webhook-backup",
+        "sections": [{
+            "activityTitle": "Digital Ocean MongoDB Backup",
+            "activitySubtitle": "k8s cronjob by pod",
+            "activityImage": "https://static.javatpoint.com/mongodb/images/mongodb-tutorial.jpg",
+            "facts": [{
+                "name": "RoleitLive",
+                "value": "'$COM1'"
+            },{
+                "name": "SareDevOps",
+                "value": "'$COM2'"
+            }],
+            "markdown": true
+        }]
+    }'

@@ -1,0 +1,7 @@
+
+HEALTHCHECK --interval=60s --retries=2 CMD \
+    wget --quiet --tries=1 --spider http://localhost:8080/login; echo $? || exit 1
+
+or 
+
+HEALTHCHECK --interval=60s --timeout=3s CMD curl -fsS http://localhost:8080/login || exit 1

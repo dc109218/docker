@@ -1,0 +1,42 @@
+version: '3'
+services: 
+  redis: 
+    image: redis:6.2.11
+    container_name: redis 
+    restart: always 
+    volumes: 
+      - /rit/redis_ha/3role/redis:/usr/local/etc/redis:rw
+      - /rit/redis_ha/3role/redis/data:/data:rw
+    command: redis-server /usr/local/etc/redis/redis.conf 
+    network_mode: "host"
+    # healthcheck:
+    #   test: [ "CMD-SHELL", "redis-cli --no-auth-warning -h 10.0.1.238 -p 54321 -a ProductionRoleitthepi8xeheeCh4vaeG4Ookou7ou6reishopah4Meewaez4yuanoh9ohgo4ahwohx ping | grep PONG" ]
+    #   interval: 30s
+    #   timeout: 3s
+    #   retries: 5
+
+  sentinel: 
+    image: redis:6.2.11 
+    container_name: sentinel 
+    restart: always 
+    volumes: 
+      - /rit/redis_ha/3role/sentinel:/usr/local/etc/redis:rw
+    command: redis-server /usr/local/etc/redis/sentinel.conf --sentinel 
+    network_mode: "host" 
+    depends_on: 
+      - redis 
+    # healthcheck:
+    #   test: [ "CMD", "redis-cli", "-p", "26379", "ping" ]
+    #   interval: 30s
+    #   timeout: 3s
+    #   retries: 5
+
+  # haproxy: 
+  #   image: haproxy:2.3 
+  #   container_name: haproxy 
+  #   restart: always 
+  #   volumes: 
+  #     - /rit/redis_ha/3role/haproxy:/usr/local/etc/haproxy 
+  #   network_mode: "host"
+  #   depends_on: 
+  #     - redis

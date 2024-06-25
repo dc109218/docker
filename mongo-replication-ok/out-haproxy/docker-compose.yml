@@ -1,0 +1,9 @@
+version: '3'
+services: 
+  haout: 
+    image: haproxy:2.3 
+    container_name: haout
+    restart: always 
+    volumes: 
+      - /rolemount/mongo-rep/out-haproxy:/usr/local/etc/haproxy 
+    network_mode: "host"

@@ -1,0 +1,10 @@
+version: '3'
+services:
+  mainproxy: 
+    image: haproxy:2.3
+    container_name: proxy
+    restart: always 
+    volumes: 
+      - /rit/haproxy/1role:/usr/local/etc/haproxy:rw
+    network_mode: "host"
+

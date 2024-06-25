@@ -1,0 +1,68 @@
+version: '3'
+services:
+  ## Config Servers
+  configsvr02:
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    container_name: mongo-config-02 
+    command: mongod --port 27017 --configsvr --replSet rs-config-server --keyFile /dcs/mongodb-keyfile
+    volumes:
+      - /rit/smongo/2role/scripts:/scripts:ro
+      - /rit/smongo/2role/configsvr_2_data/db:/data/db:rw
+      - /rit/smongo/2role/configsvr_2_data/configdb:/data/configdb:rw
+    ports:
+      - 27120:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD","mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
+
+  ## Shards 01
+  shard01-b:
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    container_name: shard-01-node-b
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-01 --keyFile /dcs/mongodb-keyfile
+    volumes:
+      - /rit/smongo/2role/scripts:/scripts:ro
+      - /rit/smongo/2role/shard01_2_data/db:/data/db:rw
+      - /rit/smongo/2role/shard01_2_data/configdb:/data/configdb:rw
+    ports:
+      - 27123:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD","mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
+
+  ## Shards 02
+  shard02-b:
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    container_name: shard-02-node-b
+    command: mongod --port 27017 --shardsvr --replSet rs-shard-02 --keyFile /dcs/mongodb-keyfile
+    volumes:
+      - /rit/smongo/2role/scripts:/scripts:ro
+      - /rit/smongo/2role/shard02_2_data/db:/data/db:rw
+      - /rit/smongo/2role/shard02_2_data/configdb:/data/configdb:rw
+    ports:
+      - 27126:27017
+    restart: always
+    # healthcheck:
+    #   test: ["CMD","mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 10s
+    #   timeout: 10s
+    #   retries: 5
+  
+  ## Router
+  router02:
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    container_name: router-02
+    volumes:
+      - /rit/smongo/2role/scripts:/scripts:ro
+      - /rit/smongo/2role/route_2_data/db:/data/db:rw
+      - /rit/smongo/2role/route_2_data/configdb:/data/configdb:rw
+    ports:
+      - 27117:27017
+    restart: always
+    command: mongos --port 27017 --configdb rs-config-server/10.122.0.2:27119,10.122.0.2:27120 --bind_ip_all --keyFile /dcs/mongodb-keyfile

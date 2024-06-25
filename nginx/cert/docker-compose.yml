@@ -1,0 +1,12 @@
+version: '3'
+services:
+  web:
+    image: registry.roleit.com:5443/nginx:latest
+    container_name: nginx
+    volumes:
+      - /rit/nginx/cert/data/nginx.conf:/etc/nginx/conf.d/default.conf
+      - /rit/nginx/cert/data/certbot/conf:/etc/letsencrypt
+      - /rit/nginx/cert/data/certbot/www:/var/www/certbot
+    ports:
+      - "80:80"
+      - "443:443"

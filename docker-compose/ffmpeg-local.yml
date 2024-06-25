@@ -1,0 +1,19 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+# docker-compose -f 1-ffmpeg-local-run.yaml up -d
+# docker-compose -f 1-ffmpeg-local-run.yaml down
+
+version: '3.9'
+services:
+  restffmpeg:
+    build: .
+    container_name: ffmpeg
+    # restart: always
+    restart: unless-stopped
+    tty: true
+    # ports:
+    #   - "20060:20060"
+    # volumes:
+      # - "/Users/bhavinbarai/OneDrive/=Server/1_Roleit-Production/roitpro-docker/1-ap-south-1(india)/9-roleit-ffmpeg-final/FFMGRoleIt:/ffmpeg:rw"

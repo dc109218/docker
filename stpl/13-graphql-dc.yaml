@@ -1,0 +1,29 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+version: '3'
+services:
+  prographql:
+    container_name: prographql
+    image: registry.roleit.com:5443/graphql-pro:130523.112717
+    restart: always #on-failure #always
+    ports:
+      - 2525:19784
+    volumes:
+      - /rit/env/graphql.env:/graphql/.env:ro
+    # healthcheck:
+    #   test: ["CMD-SHELL", "curl -fsS http://127.0.0.1:19784/graphql/healthcheck || exit 1"]
+    #   interval: 30s
+    #   timeout: 5s
+    #   retries: 2
+    networks:
+      role:
+        ipv4_address: 192.168.1.13
+networks:
+  role:
+    external: true
+
+# docker-compose -f 13-graphql-dc.yaml up -d
+# docker-compose -f 13-graphql-dc.yaml down
+

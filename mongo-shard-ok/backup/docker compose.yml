@@ -1,0 +1,17 @@
+## Diocker delete all images
+# for /F %i in ('docker images -a -q') do docker rmi -f %i
+# docker rmi -f $(docker images -a -q)
+
+version: '3.3'
+services:
+  mongo:
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    container_name: mongo
+    volumes:
+      - /rit/smongo/action/data:/data:rw
+    ports:
+      - 27017:27017
+      
+
+# docker compose up -d
+# docker-compose exec mongo bash

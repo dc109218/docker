@@ -1,0 +1,30 @@
+version: "3"
+services:
+  mprimary:
+    container_name: mprimary
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    restart: always
+    volumes:
+      - /rit/smongo/3role/db:/data/db:rw
+    env_file:
+      /rit/smongo/mongod.env
+    ports:
+      - 27018:27017
+    command: 'mongod --replSet reprit --auth --keyFile /dcs/mongodb-keyfile'
+    # healthcheck:
+    #   test: ["CMD","mongo", "--eval", "db.adminCommand('ping')"]
+    #   interval: 30s
+    #   timeout: 10s
+    #   retries: 2
+
+  arbiter:
+    container_name: arbiter
+    image: registry.roleit.com:5443/mongo:5.0.15-focal
+    restart: always
+    # volumes:
+    #   - /rit/smongo/3role/db:/data/db:rw
+    env_file:
+      /rit/smongo/mongod.env
+    ports:
+      - 27019:27017
+    command: 'mongod --replSet reprit --auth --keyFile /dcs/mongodb-keyfile'
